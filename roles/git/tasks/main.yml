@@ -1,0 +1,47 @@
+# install pre-required package
+- name: install pre-required package
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - zlib-devel
+      - perl-ExtUtils-MakeMaker
+      - curl-devel
+      - openssl-devel
+      - expat-devel
+
+# install git
+- name: download and unarchive git
+  unarchive:
+    src: https://mirrors.edge.kernel.org/pub/software/scm/git/git-{{ git_version }}.tar.gz
+    dest: /usr/local/src
+    remote_src: yes
+
+# make build
+- make:
+    chdir:  /usr/local/src/git-{{ git_version }}
+    target: all
+    params:
+      prefix: /usr/local/git-{{ git_version }}
+
+# make install
+- make:
+    chdir:  /usr/local/src/git-{{ git_version }}
+    target: install
+    params:
+      prefix: /usr/local/git-{{ git_version }}
+
+# create symbolic link except git version
+- name: symbolic link to git
+  file:
+    src: /usr/local/git-{{ git_version }}
+    dest: /usr/local/git
+    state: link
+    force: yes
+
+# activate git command
+- name: activate git command
+  file:
+    src: /usr/local/git/bin/git
+    dest: /usr/local/bin/git
+    state: link

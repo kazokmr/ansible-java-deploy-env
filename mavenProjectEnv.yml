@@ -1,0 +1,10 @@
+# Setup Environment for Manve Project
+- hosts: all
+  connection: local
+  become: yes
+  roles:
+    - common
+    - curl
+    - git
+    - openjdk
+    - maven

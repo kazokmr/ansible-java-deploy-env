@@ -1,0 +1,9 @@
+#tasks file for common
+- name: disable selinux
+  selinux: state={{ selinux_mode }}
+
+- name: set timezone
+  command: timedatectl set-timezone {{ timezone }}
+
+- name: install wget
+  yum:  name=wget

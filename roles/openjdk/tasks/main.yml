@@ -1,0 +1,3 @@
+# install OpenJDK
+- name: install OpenJDK
+  yum:  name=java-{{ jdk_version }}-openjdk-devel
