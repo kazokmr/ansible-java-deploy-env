@@ -1,10 +1,9 @@
-# Setup Environment for Manve Project
-- hosts: all
+# Setup Environment for Jenkins Server
+- hosts: jenkins
   connection: local
   become: yes
   roles:
     - common
     - curl
     - git
-    - openjdk
-    - maven
+    - jenkins

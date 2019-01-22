@@ -1,0 +1,8 @@
+# Setup Environment for jvm Server
+- hosts: jvm
+  connection: local
+  become: yes
+  roles:
+    - common
+    - curl
+    - openjdk

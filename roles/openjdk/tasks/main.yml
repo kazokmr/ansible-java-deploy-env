@@ -1,3 +1,20 @@
-# install OpenJDK
-- name: install OpenJDK
-  yum:  name=java-{{ jdk_version }}-openjdk-devel
+# install OpenJDK 11 From jdk.jvm.net
+- name: download and unarchive OpenJDK
+  unarchive:
+    src: https://download.java.net/java/GA/jdk11/9/GPL/openjdk-{{ jdk_version }}_linux-x64_bin.tar.gz
+    dest: /usr/local
+    remote_src: yes
+
+- name: Symlink JDK directory
+  file:
+    src: /usr/local/jdk-{{ jdk_version }}
+    dest: /usr/local/jdk
+    state: link
+    force: yes
+
+# activate git command
+- name: activate java command
+  file:
+    src: /usr/local/jdk/bin/java
+    dest: /usr/local/bin/java
+    state: link

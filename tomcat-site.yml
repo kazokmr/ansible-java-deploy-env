@@ -1,0 +1,8 @@
+# Setup Environment for Tomcat Server
+- hosts: tomcat
+  connection: local
+  become: yes
+  roles:
+    - common
+    - curl
+    - tomcat

@@ -1,0 +1,31 @@
+# install OpenJDK (Jenkins Required)
+- name: install OpenJDK 8 JRE (is required by Jenkins)
+  yum:  name=java-1.8.0-openjdk state=latest
+
+# Add the Jenkins repository to the yum repos, and install Jenkins
+- name: get the Jenkins repository
+  get_url: url=http://pkg.jenkins-ci.org/redhat/jenkins.repo dest=/etc/yum.repos.d/jenkins.repo
+
+- name: add the Jenkins repository
+  rpm_key: key="https://jenkins-ci.org/redhat/jenkins-ci.org.key"
+
+- name: install Jenkins
+  yum: name=jenkins state=latest
+
+# Start Jenkins Service
+- name: service jenkins start
+  service: name=jenkins state=started enabled=yes
+
+# install OpenJDK From jdk.java.net
+- name: download and unarchive OpenJDK
+  unarchive:
+    src: https://download.java.net/java/GA/jdk11/9/GPL/openjdk-{{ jdk_version }}_linux-x64_bin.tar.gz
+    dest: /usr/local
+    remote_src: yes
+
+- name: Symlink JDK directory
+  file:
+    src: /usr/local/jdk-{{ jdk_version }}
+    dest: /usr/local/jdk
+    state: link
+    force: yes

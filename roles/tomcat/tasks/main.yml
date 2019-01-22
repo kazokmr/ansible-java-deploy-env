@@ -1,0 +1,72 @@
+# install OpenJDK From jdk.java.net
+- name: download and unarchive OpenJDK
+  unarchive:
+    src: https://download.java.net/java/GA/jdk11/9/GPL/openjdk-{{ jdk_version }}_linux-x64_bin.tar.gz
+    dest: /usr/local
+    remote_src: yes
+
+- name: Symlink JDK directory
+  file:
+    src: /usr/local/jdk-{{ jdk_version }}
+    dest: /usr/local/jdk
+    state: link
+    force: yes
+
+# install Tomcat
+- name: add group "tomcat"
+  group: name=tomcat
+
+- name: add user "tomcat"
+  user: name=tomcat group=tomcat home=/usr/local/tomcat createhome=no
+  become: True
+  become_method: sudo
+
+- name: download and unarchive Tomcat
+  unarchive:
+    src: http://ftp.jaist.ac.jp/pub/apache/tomcat/tomcat-9/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz
+    dest: /usr/local
+    remote_src: yes
+
+- name: Symlink Tomcat directory
+  file:
+    src: /usr/local/apache-tomcat-{{ tomcat_version }}
+    dest: /usr/local/tomcat
+    state: link
+    force: yes
+
+- name: Change ownership of Tomcat installation
+  file: path=/usr/local/tomcat owner=tomcat group=tomcat state=directory recurse=yes
+
+- name: Configure Tomcat server
+  template: src=server.xml dest=/usr/local/tomcat/conf/
+  notify: restart tomcat
+
+- name: Configure Tomcat users
+  template: src=tomcat-users.xml dest=/usr/local/tomcat/conf/
+  notify: restart tomcat
+
+- name: Install Tomcat init script
+  copy: src=tomcat-initscript.sh dest=/etc/init.d/tomcat mode=0755
+
+- name: Start Tomcat
+  service: name=tomcat state=restarted enabled=yes
+
+# Set ipTables and firewall
+- name: deploy iptables rules
+  template: src=iptables-save dest=/etc/sysconfig/iptables
+  when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'"
+  notify: restart iptables
+
+- name: running firewall daemon
+  service: name=firewalld state=started enabled=yes
+
+- name: insert firewalld rule for tomcat http port
+  firewalld: port={{ http_port }}/tcp permanent=yes state=enabled immediate=yes
+  when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"
+
+- name: insert firewalld rule for tomcat https port
+  firewalld: port={{ https_port }}/tcp permanent=yes state=enabled immediate=yes
+  when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"
+
+- name: wait for tomcat to start
+  wait_for: port={{http_port}}
