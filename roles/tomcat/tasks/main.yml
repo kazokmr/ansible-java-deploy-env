@@ -45,6 +45,10 @@
   template: src=tomcat-users.xml dest=/usr/local/tomcat/conf/
   notify: restart tomcat
 
+- name: Configure Tomcat context
+  template: src=context.xml dest=/usr/local/tomcat/webapps/manager/META-INF/
+  notify: restart tomcat
+
 - name: Install Tomcat init script
   copy: src=tomcat-initscript.sh dest=/etc/init.d/tomcat mode=0755
 
