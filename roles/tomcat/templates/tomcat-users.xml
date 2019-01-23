@@ -34,7 +34,7 @@
       examples web application, do not forget to remove the <!.. ..> that surrounds
       them. You will also need to set the passwords to something appropriate.
     -->
-    <user username="{{ admin_username }}" password="{{ admin_password }}" roles="manager-gui"/>
+    <user username="{{ admin_username }}" password="{{ admin_password }}" roles="manager-gui,manager-script"/>
     <!--
       <role rolename="tomcat"/>
       <role rolename="role1"/>
