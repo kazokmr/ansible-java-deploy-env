@@ -1,0 +1,37 @@
+# Install Application Service
+- name: add group "jvm"
+  group: name=jvm
+
+- name: add user "jvm"
+  user: name=jvm group=jvm home=/var/jvm/ createhome=no
+  become: True
+  become_method: sudo
+
+- name: Change ownership of JDK installation
+  file: path=/usr/local/jdk owner=jvm group=jvm state=directory recurse=yes
+
+# activate java command
+- name: Activate java command
+  file:
+    src: /usr/local/jdk/bin/java
+    dest: /usr/local/bin/java
+    state: link
+
+# Install Service
+- name: Installl Application Serivce
+  template: src=app.service dest=/etc/systemd/system/
+
+- name: enable service app and ensure it is not masked
+  systemd:
+    name: app
+    enabled: yes
+    masked: no
+
+- name: just force systemd to reread configs
+  systemd:
+    daemon_reload: yes
+
+- name: Make sure a service is running
+  systemd:
+    state: started
+    name: app

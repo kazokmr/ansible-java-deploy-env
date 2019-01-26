@@ -1,4 +1,4 @@
-# install OpenJDK 11 From jdk.jvm.net
+# install OpenJDK From jdk.jvm.net
 - name: download and unarchive OpenJDK
   unarchive:
     src: https://download.java.net/java/GA/jdk11/9/GPL/openjdk-{{ jdk_version }}_linux-x64_bin.tar.gz
@@ -12,9 +12,3 @@
     state: link
     force: yes
 
-# activate git command
-- name: activate java command
-  file:
-    src: /usr/local/jdk/bin/java
-    dest: /usr/local/bin/java
-    state: link

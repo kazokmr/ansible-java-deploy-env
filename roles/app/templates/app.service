@@ -1,0 +1,11 @@
+[Unit]
+Description=app
+After=syslog.target
+
+[Service]
+User=jvm
+ExecStart=/var/jvm/web-spring-boot.jar
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

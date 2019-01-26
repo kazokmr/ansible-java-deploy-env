@@ -5,4 +5,5 @@
   roles:
     - common
     - curl
+    - openjdk
     - tomcat

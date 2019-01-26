@@ -7,3 +7,4 @@
     - curl
     - git
     - jenkins
+    - openjdk
