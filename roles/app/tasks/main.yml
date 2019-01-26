@@ -1,24 +1,30 @@
+# activate java command
+- name: Activate java command
+  file:
+    src: /usr/local/jdk/bin/java
+    dest: /usr/bin/java
+    state: link
+
 # add users for execute application
 - name: add group "jvm"
   group: name=jvm
 
 - name: add user "jvm"
   user: name=jvm group=jvm home=/var/jvm
-  become: True
+  become: yes
   become_method: sudo
+
+- name: grant sudo to jvm user
+  lineinfile:
+    dest: /etc/sudoers
+    backup: yes
+    line: 'jvm ALL=(ALL) NOPASSWD: ALL'
 
 - name: create jvm home
   file: path=/var/jvm owner=jvm group=jvm state=directory recurse=yes mode=0700
 
 - name: Change ownership of JDK installation
   file: path=/usr/local/jdk owner=jvm group=jvm state=directory recurse=yes
-
-# activate java command
-- name: Activate java command
-  file:
-    src: /usr/local/jdk/bin/java
-    dest: /usr/local/bin/java
-    state: link
 
 # Install Service
 - name: Installl Application Serivce
