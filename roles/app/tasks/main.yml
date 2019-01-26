@@ -1,11 +1,14 @@
-# Install Application Service
+# add users for execute application
 - name: add group "jvm"
   group: name=jvm
 
 - name: add user "jvm"
-  user: name=jvm group=jvm home=/var/jvm/ createhome=no
+  user: name=jvm group=jvm home=/var/jvm
   become: True
   become_method: sudo
+
+- name: create jvm home
+  file: path=/var/jvm owner=jvm group=jvm state=directory recurse=yes mode=0700
 
 - name: Change ownership of JDK installation
   file: path=/usr/local/jdk owner=jvm group=jvm state=directory recurse=yes
