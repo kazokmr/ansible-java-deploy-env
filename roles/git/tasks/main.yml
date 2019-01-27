@@ -22,26 +22,26 @@
     chdir:  /usr/local/src/git-{{ git_version }}
     target: all
     params:
-      prefix: /usr/local/git-{{ git_version }}
+      prefix: /usr/local/share/git-{{ git_version }}
 
 # make install
 - make:
     chdir:  /usr/local/src/git-{{ git_version }}
     target: install
     params:
-      prefix: /usr/local/git-{{ git_version }}
+      prefix: /usr/local/share/git-{{ git_version }}
 
 # create symbolic link except git version
 - name: symbolic link to git
   file:
-    src: /usr/local/git-{{ git_version }}
-    dest: /usr/local/git
+    src: /usr/local/share/git-{{ git_version }}
+    dest: /usr/local/share/git
     state: link
     force: yes
 
 # activate git command
 - name: activate git command
   file:
-    src: /usr/local/git/bin/git
+    src: /usr/local/share/git/bin/git
     dest: /usr/local/bin/git
     state: link

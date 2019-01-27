@@ -7,31 +7,31 @@
 
 # make build
 - make:
-    chdir:  /usr/local/src/curl-{{ curl_version }}
+    chdir: /usr/local/src/curl-{{ curl_version }}
     target: all
     params:
-      prefix: /usr/local/curl-{{ curl_version }}
+      prefix: /usr/local/share/curl-{{ curl_version }}
       enable-libcurl-option: yes
 
 # make install
 - make:
-    chdir:  /usr/local/src/curl-{{ curl_version }}
+    chdir: /usr/local/src/curl-{{ curl_version }}
     target: install
     params:
-      prefix: /usr/local/curl-{{ curl_version }}
+      prefix: /usr/local/share/curl-{{ curl_version }}
       enable-libcurl-option: yes
 
 # create symbolic link except curl version
 - name: symbolic link to curl
   file:
-    src: /usr/local/curl-{{ curl_version }}
-    dest: /usr/local/curl
+    src: /usr/local/share/curl-{{ curl_version }}
+    dest: /usr/local/share/curl
     state: link
     force: yes
 
 # activate curl command
 - name: activate curl command
   file:
-    src: /usr/local/curl/bin/curl
+    src: /usr/local/share/curl/bin/curl
     dest: /usr/local/bin/curl
     state: link

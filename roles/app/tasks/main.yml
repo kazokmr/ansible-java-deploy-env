@@ -1,8 +1,8 @@
 # activate java command
 - name: Activate java command
   file:
-    src: /usr/local/jdk/bin/java
-    dest: /usr/bin/java
+    src: /usr/local/share/java/bin/java
+    dest: /usr/local/bin/java
     state: link
 
 # add users for execute application
@@ -24,7 +24,7 @@
   file: path=/var/jvm owner=jvm group=jvm state=directory recurse=yes mode=0700
 
 - name: Change ownership of JDK installation
-  file: path=/usr/local/jdk owner=jvm group=jvm state=directory recurse=yes
+  file: path=/usr/local/share/jdk owner=jvm group=jvm state=directory recurse=yes
 
 # Install Service
 - name: Installl Application Serivce

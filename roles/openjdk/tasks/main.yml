@@ -2,13 +2,13 @@
 - name: download and unarchive OpenJDK
   unarchive:
     src: https://download.java.net/java/GA/jdk11/9/GPL/openjdk-{{ jdk_version }}_linux-x64_bin.tar.gz
-    dest: /usr/local
+    dest: /opt
     remote_src: yes
 
 - name: Symlink JDK directory
   file:
-    src: /usr/local/jdk-{{ jdk_version }}
-    dest: /usr/local/jdk
+    src: /opt/jdk-{{ jdk_version }}
+    dest: /usr/local/share/java
     state: link
     force: yes
 

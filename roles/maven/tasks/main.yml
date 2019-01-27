@@ -2,20 +2,20 @@
 - name: download and unarchive apache-maven
   unarchive:
     src: http://ftp.meisei-u.ac.jp/mirror/apache/dist/maven/maven-3/{{ maven_version }}/binaries/apache-maven-{{ maven_version }}-bin.tar.gz
-    dest: /usr/local
+    dest: /opt
     remote_src: yes
 
 # create symbolic link except maven version
 - name: symbolic link to apache-maven
   file:
-    src: /usr/local/apache-maven-{{ maven_version }}
-    dest: /usr/local/apache-maven
+    src: /opt/apache-maven-{{ maven_version }}
+    dest: /usr/local/share/apache-maven
     state: link
     force: yes
 
 # activate mvn command
 - name: activate mvn command
   file:
-    src: /usr/local/apache-maven/bin/mvn
+    src: /usr/local/share/apache-maven/bin/mvn
     dest: /usr/local/bin/mvn
     state: link
