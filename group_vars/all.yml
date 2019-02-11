@@ -1,5 +1,5 @@
 # install version
-curl_version: 7.63.0
+curl_version: 7.64.0
 
 # install version
 git_version: 2.20.1
@@ -8,7 +8,7 @@ git_version: 2.20.1
 jdk_version: 11.0.2
 
 # Tomcat version
-tomcat_version: 9.0.14
+tomcat_version: 9.0.16
 
 # install version
 maven_version: 3.6.0
