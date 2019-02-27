@@ -1,0 +1,32 @@
+# Install yum-utils provides the yum-config-manager utility, and device-mapper-persistent-data and lvm2 are required by the devicemapper storage driver.
+- name: Install required packages
+  yum:
+    name:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+    state: present
+
+# Use the following command to set up the stable repository.
+- name: add docker-ce repo
+  shell: "yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo"
+  args:
+    chdir: "/etc/yum.repos.d"
+    creates: docker-ce.repo
+
+# Install the latest version of Docker CE and containerd.
+- name: install docker-ce
+  yum:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: present
+
+# Start Docker.
+- name: start docker
+  systemd:
+    name: docker.service
+    state: started
+    daemon_reload: yes
+    enabled: yes

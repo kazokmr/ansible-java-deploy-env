@@ -1,0 +1,9 @@
+# Setup Environment for Docker Server
+- hosts: docker
+  connection: local
+  become: yes
+  roles:
+    - common
+    - curl
+    - git
+    - docker
